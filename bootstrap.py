@@ -18,6 +18,9 @@ import venv
 import webbrowser
 from pathlib import Path
 
+# Prevent hermes_agent from intercepting execution of WebUI processes
+# and throwing them into isolated sandbox environments.
+os.environ["HERMES_DISABLE_LAZY_INSTALLS"] = "1"
 
 INSTALLER_URL = "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh"
 REPO_ROOT = Path(__file__).resolve().parent

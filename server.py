@@ -6,6 +6,25 @@ import signal
 import socket
 import ssl
 import sys
+import os
+
+# Pre-import run_agent and restore sys.path so its CLI bootstrap logic doesn't destroy the Web UI environment
+try:
+    _old_path = sys.path[:]
+    _old_pythonpath = os.environ.get("PYTHONPATH")
+    _old_path_env = os.environ.get("PATH")
+    _old_venv = os.environ.get("VIRTUAL_ENV")
+    
+    import run_agent
+finally:
+    sys.path[:] = _old_path
+    if _old_pythonpath is not None: os.environ["PYTHONPATH"] = _old_pythonpath
+    else: os.environ.pop("PYTHONPATH", None)
+    if _old_path_env is not None: os.environ["PATH"] = _old_path_env
+    else: os.environ.pop("PATH", None)
+    if _old_venv is not None: os.environ["VIRTUAL_ENV"] = _old_venv
+    else: os.environ.pop("VIRTUAL_ENV", None)
+
 import threading
 import time
 import traceback
